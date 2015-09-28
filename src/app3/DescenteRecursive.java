@@ -8,6 +8,8 @@ public class DescenteRecursive {
 
   // Attributs
 
+	
+	
 /** Constructeur de DescenteRecursive :
       - recoit en argument le nom du fichier contenant l'expression a analyser
       - pour l'initalisation d'attribut(s)
@@ -21,18 +23,72 @@ public DescenteRecursive(String in) {
  *    Elle retourne une reference sur la racine de l'AST construit
  */
 public ElemAST AnalSynt( ) {
-   //
+   
+	
+	
+	
 	ElemAST t = new FeuilleAST();
 	
 	return t;
 }
 
+public boolean verifierSynt(String input) {
+	
+	boolean bOperande = true;			//Tells if next input is an operande or not
+	int nbParentheses = 0;
+	
+	for(String s: input.split("\n")){
+		
+		System.out.println(s);
+		
+		if(s.equals("(")){
+			nbParentheses++;
+		}
+		else if(s.equals(")")){
+			nbParentheses--;
+			if(nbParentheses < 0){
+				return false;
+			}
+		}
+		else if(isAnOperande(s)){
+			
+			if(!bOperande){
+				return false;
+			}
+			bOperande = false;
+		}
+		else if(isAnOperateur(s)){
+			
+			if(bOperande){
+				return false;
+			}
+			bOperande = true;	
+		}
+	}
+	
+	if(nbParentheses != 0){
+		return false;
+	}
+	if(bOperande == true){
+		return false;
+	}
+	return true;
+}
+
+public boolean isAnOperande(String s){
+
+	return s.charAt(0) >= 0x41 && s.charAt(0) <= 0x5A || s.charAt(0) >= 0x30 && s.charAt(0) <= 0x39;
+	
+}
+
+public boolean isAnOperateur(String s){
+	
+	return s.charAt(0) == '+' || s.charAt(0) == '-' || s.charAt(0) == '*' || s.charAt(0) == '/';
+}
 
 // Methode pour chaque symbole non-terminal de la grammaire retenue
 // ... 
 // ...
-
-
 
 /** ErreurSynt() envoie un message d'erreur syntaxique
  */
