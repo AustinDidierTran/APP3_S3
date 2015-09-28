@@ -23,7 +23,6 @@ public class Terminal {
   public Terminal(String s) {
 	  
 	  
-	  
   }
 
 }
