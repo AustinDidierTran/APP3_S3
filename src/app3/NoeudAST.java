@@ -8,18 +8,43 @@ public class NoeudAST extends ElemAST {
 
   // Attributs
 
+char Operateur;
+	
   /** Constructeur pour l'initialisation d'attributs
    */
-  public NoeudAST( ) { // avec arguments
+  public NoeudAST(char op) { // avec arguments
     //
+	  Operateur = op;
   }
 
  
   /** Evaluation de noeud d'AST
    */
   public int EvalAST( ) {
-     //
-	  return -1;
+	  if (Operateur == '+')
+	  {
+		  return gauche.EvalAST() + droite.EvalAST();
+	  }
+	  else if (Operateur == '-')
+	  {
+		  return gauche.EvalAST() - droite.EvalAST();
+	  }
+	  else if (Operateur == '*')
+	  {
+		  return gauche.EvalAST() * droite.EvalAST();
+	  }
+	  else if (Operateur == '/')
+	  {
+		  try
+		  {
+			  return gauche.EvalAST() / droite.EvalAST();
+		  }
+		  catch (Exception e)
+		  {
+			  ErreurEvalAST("Cannot divide by 0 !");
+		  }
+	  }
+	  return 0;
   }
 
 
@@ -27,7 +52,7 @@ public class NoeudAST extends ElemAST {
    */
   public String LectAST( ) {
      //
-	  return "undefined";
+	  return Character.toString(Operateur);
   }
 
 }
