@@ -7,7 +7,11 @@ package app3;
 public abstract class ElemAST {
 
   
-  /** Evaluation d'AST
+  public ElemAST gauche;
+public ElemAST droite;
+
+
+/** Evaluation d'AST
    */
   public abstract int EvalAST();
 
