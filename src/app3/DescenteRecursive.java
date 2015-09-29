@@ -9,7 +9,8 @@ public class DescenteRecursive {
   // Attributs
 
 	String input;
-	AnalLex anal = new AnalLex();
+	AnalLex anal;
+	Terminal t;
 	
 /** Constructeur de DescenteRecursive :
       - recoit en argument le nom du fichier contenant l'expression a analyser
@@ -17,8 +18,9 @@ public class DescenteRecursive {
  */
 	
 public DescenteRecursive(String in) {
-    //
-	input = in;
+    Reader r = new Reader(in);
+	anal = new AnalLex(r.toString());
+	t = anal.prochainTerminal();
 }
 
 
@@ -81,12 +83,19 @@ public ElemAST AnalSynt(String in, int Etat) {
 public ElemAST Exp(){
 	
 	ElemAST node1 = U();
-	if(Anal)
+	
+	if(anal.prochainTerminal().equals('+') || anal.prochainTerminal().equals('-')){
+		ElemAST node2 = Exp();
+	}
+	
+	return node1;
 	
 }
 public ElemAST U(){
 	
-	ElemAST e = new NoeudAST('e');
+	NoeudAST e = new NoeudAST('e');
+	
+	return e;
 }
 public ElemAST V(){
 	ElemAST e = new NoeudAST('e');
