@@ -21,6 +21,14 @@ String Nombre;
    */
   public int EvalAST( ) {
     //
+	  try
+	  {
+		  Integer.parseInt(Nombre);
+	  }
+	  catch (Exception ex)
+	  {
+		  ErreurEvalAST(ex.toString());
+	  }
 	  return Integer.parseInt(Nombre);
   }
 

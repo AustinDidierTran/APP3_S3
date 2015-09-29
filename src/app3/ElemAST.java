@@ -24,7 +24,8 @@ public abstract class ElemAST {
 /** ErreurEvalAST() envoie un message d'erreur lors de la construction d'AST
  */  
   public void ErreurEvalAST(String s) {	
-    // 
+	  System.out.println(s);
+	  System.exit(1);
   }
 
 }

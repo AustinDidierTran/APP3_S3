@@ -57,7 +57,7 @@ char Operateur;
    */
   public String LectAST( ) {
      //
-	  return Character.toString(Operateur);
+	  return gauche.LectAST() + " " + Character.toString(Operateur) + " " + droite.LectAST();
   }
 
 }
