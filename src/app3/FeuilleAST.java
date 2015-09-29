@@ -7,12 +7,13 @@ package app3;
 public class FeuilleAST extends ElemAST {
 
   // Attribut(s)
-
+String Nombre;
 
 /**Constructeur pour l'initialisation d'attribut(s)
  */
-  public FeuilleAST( ) {  // avec arguments
+  public FeuilleAST(String i) {  // avec arguments
     //
+	  Nombre = i;
   }
 
 
@@ -20,7 +21,7 @@ public class FeuilleAST extends ElemAST {
    */
   public int EvalAST( ) {
     //
-	  return 0;
+	  return Integer.parseInt(Nombre);
   }
 
 
@@ -29,7 +30,7 @@ public class FeuilleAST extends ElemAST {
   public String LectAST( ) {
     //
 	  
-	  return "undefined";
+	  return Nombre;
   }
 
 }
