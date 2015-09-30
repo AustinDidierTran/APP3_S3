@@ -86,13 +86,14 @@ public ElemAST V(){
 		System.exit(1);
 	}
 	else if(currentTerminal.chaine.equals('(')){
-		
-		currentTerminal = anal.prochainTerminal();
+		if (anal.resteTerminal())
+			currentTerminal = anal.prochainTerminal();
 		
 		feuille1 = Exp();
 		
 		if(currentTerminal.chaine.equals(')')){
-			currentTerminal = anal.prochainTerminal();
+			if (anal.resteTerminal())
+				currentTerminal = anal.prochainTerminal();
 		}
 		else{
 			System.out.println("Parenthese fermante manquante");
@@ -101,7 +102,8 @@ public ElemAST V(){
 		
 	}else{
 		feuille1 = new FeuilleAST(currentTerminal);
-		currentTerminal = anal.prochainTerminal();
+		if (anal.resteTerminal())
+			currentTerminal = anal.prochainTerminal();
 	}
 	System.out.println("Retourne une feuille car "+currentTerminal.chaine+" "+feuille1.LectAST());
 	return feuille1;
