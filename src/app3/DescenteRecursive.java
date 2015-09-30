@@ -43,7 +43,7 @@ public ElemAST Exp(){
 		System.out.println("Parenthese fermantes sans paranthese ouvrantes");
 		System.exit(1);
 	}
-	else if(currentTerminal.chaine.equals('+') || currentTerminal.chaine.equals('-')){
+	else if(currentTerminal.chaine.equals("+") || currentTerminal.chaine.equals("-")){
 		
 		Terminal oldTerminal = currentTerminal;
 		currentTerminal = anal.prochainTerminal();
@@ -51,7 +51,8 @@ public ElemAST Exp(){
 		ElemAST node2 = Exp();
 		return new NoeudAST(oldTerminal, node1, node2);
 	}
-	
+
+	System.out.println("Retourne une feuille car "+currentTerminal.chaine);
 	return node1;
 	
 }
@@ -64,7 +65,7 @@ public ElemAST U(){
 		System.out.println("Parenthese fermantes sans paranthese ouvrantes");
 		System.exit(1);
 	}
-	else if(currentTerminal.chaine.equals('*') || currentTerminal.chaine.equals('/')){
+	else if(currentTerminal.chaine.equals("*") || currentTerminal.chaine.equals("/")){
 		
 		Terminal oldTerminal = currentTerminal;
 		currentTerminal = anal.prochainTerminal();
@@ -73,6 +74,7 @@ public ElemAST U(){
 		return new NoeudAST(oldTerminal, node1, node2);
 	}
 	
+	System.out.println("Retourne une feuille car "+currentTerminal.chaine);
 	return node1;
 }
 public ElemAST V(){
@@ -101,7 +103,7 @@ public ElemAST V(){
 		feuille1 = new FeuilleAST(currentTerminal);
 		currentTerminal = anal.prochainTerminal();
 	}
-	
+	System.out.println("Retourne une feuille car "+currentTerminal.chaine+" "+feuille1.LectAST());
 	return feuille1;
 }
 

@@ -1,2 +1,2 @@
-Lecture de l'AST trouve : 69
-Evaluation de l'AST trouve : 69
+Lecture de l'AST trouve : 15 * 2
+Evaluation de l'AST trouve : 30
