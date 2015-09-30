@@ -7,15 +7,21 @@ package app3;
 public class FeuilleAST extends ElemAST {
 
   // Attribut(s)
-String Nombre;
+	Terminal terminal;
 
+	public FeuilleAST(){
+		terminal = null;
+	}
 /**Constructeur pour l'initialisation d'attribut(s)
  */
-  public FeuilleAST(String i) {  // avec arguments
+  public FeuilleAST(String s) {  // avec arguments
     //
-	  Nombre = i;
+	  terminal = new Terminal();
+	  terminal.chaine = s;
   }
-
+  public FeuilleAST(Terminal t){
+	  terminal = t;
+  }
 
   /** Evaluation de feuille d'AST
    */
@@ -23,13 +29,13 @@ String Nombre;
     //
 	  try
 	  {
-		  Integer.parseInt(Nombre);
+		  Integer.parseInt(terminal.chaine);
 	  }
 	  catch (Exception ex)
 	  {
 		  ErreurEvalAST(ex.toString());
 	  }
-	  return Integer.parseInt(Nombre);
+	  return Integer.parseInt(terminal.chaine);
   }
 
 
@@ -38,7 +44,7 @@ String Nombre;
   public String LectAST( ) {
     //
 	  
-	  return Nombre;
+	  return terminal.chaine;
   }
 
 }

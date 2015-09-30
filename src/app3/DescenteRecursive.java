@@ -39,7 +39,11 @@ public ElemAST Exp(){
 	
 	ElemAST node1 = U();
 	
-	if(currentTerminal.equals('+') || currentTerminal.equals('-')){
+	if(currentTerminal.chaine.equals(')')){
+		System.out.println("Parenthese fermantes sans paranthese ouvrantes");
+		System.exit(1);
+	}
+	else if(currentTerminal.chaine.equals('+') || currentTerminal.chaine.equals('-')){
 		
 		Terminal oldTerminal = currentTerminal;
 		currentTerminal = anal.prochainTerminal();
@@ -56,13 +60,49 @@ public ElemAST U(){
 	
 	ElemAST node1 = V();
 	
-	
+	if(currentTerminal.chaine.equals(')')){
+		System.out.println("Parenthese fermantes sans paranthese ouvrantes");
+		System.exit(1);
+	}
+	else if(currentTerminal.chaine.equals('*') || currentTerminal.chaine.equals('/')){
+		
+		Terminal oldTerminal = currentTerminal;
+		currentTerminal = anal.prochainTerminal();
+		
+		ElemAST node2 = Exp();
+		return new NoeudAST(oldTerminal, node1, node2);
+	}
 	
 	return node1;
 }
 public ElemAST V(){
-	ElemAST e = new NoeudAST('e');
-	return e;
+	
+	ElemAST feuille1 = new FeuilleAST();
+	
+	if(currentTerminal.chaine.equals(')')){
+		System.out.println("Parenthese fermantes sans paranthese ouvrantes");
+		System.exit(1);
+	}
+	else if(currentTerminal.chaine.equals('(')){
+		
+		currentTerminal = anal.prochainTerminal();
+		
+		feuille1 = Exp();
+		
+		if(currentTerminal.chaine.equals(')')){
+			currentTerminal = anal.prochainTerminal();
+		}
+		else{
+			System.out.println("Parenthese fermante manquante");
+			System.exit(1);
+		}
+		
+	}else{
+		feuille1 = new FeuilleAST(currentTerminal);
+		currentTerminal = anal.prochainTerminal();
+	}
+	
+	return feuille1;
 }
 
 public boolean verifierSynt(String input) {
@@ -128,7 +168,33 @@ public void ErreurSynt(String s)
 {
     //
 }
+public static void execute(String[] args){
 
+    String toWriteLect = "";
+    String toWriteEval = "";
+
+    System.out.println("Debut d'analyse syntaxique");
+    if (args.length == 0){
+      args = new String [2];
+      args[0] = "ResultatLexical.txt";
+      args[1] = "ResultatSyntaxique.txt";
+    }
+    DescenteRecursive dr = new DescenteRecursive(args[0]);
+    try {
+      ElemAST RacineAST = dr.AnalSynt();
+      toWriteLect += "Lecture de l'AST trouve : " + RacineAST.LectAST() + "\n";
+      System.out.println(toWriteLect);
+      toWriteEval += "Evaluation de l'AST trouve : " + RacineAST.EvalAST() + "\n";
+      System.out.println(toWriteEval);
+      Writer w = new Writer(args[1],toWriteLect+toWriteEval); // Ecriture de toWrite 
+                                                              // dans fichier args[1]
+    } catch (Exception e) {
+      System.out.println(e);
+      e.printStackTrace();
+      System.exit(51);
+    }
+    System.out.println("Analyse syntaxique terminee");
+}
 
 
   //Methode principale a lancer pour tester l'analyseur syntaxique 
