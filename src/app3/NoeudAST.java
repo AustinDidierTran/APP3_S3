@@ -7,39 +7,43 @@ package app3;
 public class NoeudAST extends ElemAST {
 
   // Attributs
+	Terminal terminal;
 	ElemAST gauche;
 	ElemAST droite;
 	
-	
-char Operateur;
-	
   /** Constructeur pour l'initialisation d'attributs
    */
-  public NoeudAST(char op) { // avec arguments
+  public NoeudAST(Terminal t) { // avec arguments
     //
-	  Operateur = op;
+	  terminal = t;
   }
 
-  public NoeudAST(char op, ElemAST a, ElemAST b){
-	  
+  public NoeudAST(char op) {
+	  terminal.chaine = "" + op;
+  }
+  
+  public NoeudAST(Terminal t, ElemAST a, ElemAST b){
+	  terminal = t;
+	  gauche = a;
+	  droite = b;
   }
   
   /** Evaluation de noeud d'AST
    */
   public int EvalAST( ) {
-	  if (Operateur == '+')
+	  if (terminal.chaine.equals("+"))
 	  {
 		  return gauche.EvalAST() + droite.EvalAST();
 	  }
-	  else if (Operateur == '-')
+	  else if (terminal.chaine.equals("-"))
 	  {
 		  return gauche.EvalAST() - droite.EvalAST();
 	  }
-	  else if (Operateur == '*')
+	  else if (terminal.chaine.equals("*"))
 	  {
 		  return gauche.EvalAST() * droite.EvalAST();
 	  }
-	  else if (Operateur == '/')
+	  else if (terminal.chaine.equals("/"))
 	  {
 		  try
 		  {
@@ -57,7 +61,7 @@ char Operateur;
    */
   public String LectAST( ) {
      //
-	  return gauche.LectAST() + " " + Character.toString(Operateur) + " " + droite.LectAST();
+	  return gauche.LectAST() + " " + terminal.chaine + " " + droite.LectAST();
   }
 
 }

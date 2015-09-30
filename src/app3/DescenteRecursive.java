@@ -10,7 +10,7 @@ public class DescenteRecursive {
 
 	String input;
 	AnalLex anal;
-	Terminal t;
+	Terminal currentTerminal;
 	
 /** Constructeur de DescenteRecursive :
       - recoit en argument le nom du fichier contenant l'expression a analyser
@@ -20,82 +20,45 @@ public class DescenteRecursive {
 public DescenteRecursive(String in) {
     Reader r = new Reader(in);
 	anal = new AnalLex(r.toString());
-	t = anal.prochainTerminal();
+	currentTerminal = anal.prochainTerminal();
 }
 
 
 /** AnalSynt() effectue l'analyse syntaxique et construit l'AST.
  *    Elle retourne une reference sur la racine de l'AST construit
  */
-public ElemAST AnalSynt(String in, int Etat) {
-   //
-	ElemAST t = null;
-	int Curseur = in.length() -1;
-	int ValeurPlusFaibleOperateur = 999999;
-	int ValeurActuelle = 0;
-	int PositionPlusFaibleOperateur = -1;
-	while (Curseur >= 0)
-	{
-		if (in.charAt(Curseur) == ')')
-		{
-			ValeurActuelle++;
-		}
-		else if (in.charAt(Curseur) == '(')
-		{
-			ValeurActuelle--;
-		}
-		
-		if (Etat == 0)
-		{
-			if ((in.charAt(Curseur) == '+' || 
-				in.charAt(Curseur) == '-') && ValeurActuelle < ValeurPlusFaibleOperateur)
-			{
-				PositionPlusFaibleOperateur = Curseur;
-			}
-		}
-		else if (Etat == 1)
-		{
-			if ((in.charAt(Curseur) == 'x' || 
-					in.charAt(Curseur) == '/') && ValeurActuelle < ValeurPlusFaibleOperateur)
-				{
-					PositionPlusFaibleOperateur = Curseur;
-				}
-		}
-		Curseur--;
-	}
-	if (PositionPlusFaibleOperateur >= 0)
-	{
-		t = new NoeudAST(in.charAt(PositionPlusFaibleOperateur));
-		t.gauche = AnalSynt(in.substring(0, PositionPlusFaibleOperateur - 1), 0);
-		t.droite = AnalSynt(in.substring(PositionPlusFaibleOperateur + 1, in.length() - 1), 0);
-	}
-	else if (Etat == 0) // Pas de +/-, on cherche un * ou /
-	{
-		t = AnalSynt(in, 1);
-	}
-	else // Pas d'op�rateur, on a un chiffre qui est une feuille
-	{
-		t = new FeuilleAST(in);
-	}	
-	return t;
+public ElemAST AnalSynt() {
+	
+	ElemAST n = Exp();
+	
+	return n;
+	
 }
 
 public ElemAST Exp(){
 	
 	ElemAST node1 = U();
 	
-	if(anal.prochainTerminal().equals('+') || anal.prochainTerminal().equals('-')){
+	if(currentTerminal.equals('+') || currentTerminal.equals('-')){
+		
+		Terminal oldTerminal = currentTerminal;
+		currentTerminal = anal.prochainTerminal();
+		
 		ElemAST node2 = Exp();
+		return new NoeudAST(oldTerminal, node1, node2);
 	}
 	
 	return node1;
 	
 }
+
 public ElemAST U(){
 	
-	NoeudAST e = new NoeudAST('e');
+	ElemAST node1 = V();
 	
-	return e;
+	
+	
+	return node1;
 }
 public ElemAST V(){
 	ElemAST e = new NoeudAST('e');
@@ -181,7 +144,7 @@ public void ErreurSynt(String s)
     }
     DescenteRecursive dr = new DescenteRecursive(args[0]);
     try {
-      ElemAST RacineAST = dr.AnalSynt(args[0], 0);
+      ElemAST RacineAST = dr.AnalSynt();
       toWriteLect += "Lecture de l'AST trouve : " + RacineAST.LectAST() + "\n";
       System.out.println(toWriteLect);
       toWriteEval += "Evaluation de l'AST trouve : " + RacineAST.EvalAST() + "\n";
